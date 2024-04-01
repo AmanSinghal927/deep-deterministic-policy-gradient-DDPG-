@@ -1,0 +1,3 @@
+- reward_type=dense
+- agent=rl
+- experiment=rl

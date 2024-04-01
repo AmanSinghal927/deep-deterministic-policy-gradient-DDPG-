@@ -1,0 +1,51 @@
+replay_buffer_size: 150000
+replay_buffer_num_workers: 2
+nstep: 3
+batch_size: 256
+seed: 0
+device: cpu
+save_video: true
+save_train_video: false
+use_tb: true
+obs_type: features
+reward_type: dense
+experiment: rl
+num_demos: 100
+expert_dataset: /path/to/expert/demo/bc.pkl
+agent:
+  _target_: agent.rl.Agent
+  obs_shape: ???
+  action_shape: ???
+  device: ${device}
+  lr: 0.0001
+  critic_target_tau: 0.01
+  update_every_steps: 2
+  use_tb: ${use_tb}
+  num_expl_steps: 1000
+  hidden_dim: ${suite.hidden_dim}
+  stddev_schedule: 0.3
+  stddev_clip: 0.3
+suite:
+  suite: particle
+  name: particle
+  frame_stack: 1
+  action_repeat: 1
+  discount: 0.99
+  hidden_dim: 256
+  height: 200
+  width: 200
+  num_train_frames: 50000
+  num_seed_frames: 500
+  eval_every_frames: 500
+  num_eval_episodes: 10
+  save_snapshot: true
+  task_make_fn:
+    _target_: suite.particle.make
+    name: ${task_name}
+    seed: ${seed}
+    height: ${suite.height}
+    width: ${suite.width}
+    block: null
+    reward_type: ${reward_type}
+task_name: particle-v0
+num_train_frames_bc: 6010
